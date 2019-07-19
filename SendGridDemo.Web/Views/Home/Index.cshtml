@@ -1,0 +1,57 @@
+﻿@using IntelliTect.Coalesce.TypeDefinition
+@{
+    ViewData["Title"] = "My New Coalesce Application";
+}
+
+<div class="content" style="margin: 100px; margin-top: 0px">
+    <br />
+    
+    <h1 class="thin" style="text-transform: lowercase; text-align: center">
+        <small>
+            below you will find links to your coalesce-generated views.
+        </small>
+    </h1>
+    <br />
+    <style>
+        .admin-container tbody  {
+            font-size: 1.3em;
+        }
+
+        td, .admin-container div {
+            padding: 3px 10px !important;
+        }
+    </style>
+    <div class="admin-container card">
+        <div class="card-body">
+            <table class="table highlight-rows">
+                <thead>
+                    <tr>
+                        <th>Entity</th>
+                        <th colspan="2">Links</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var vm in ReflectionRepository.Global.ApiBackedClasses.OrderBy(f => f.Name))
+                {
+                    <tr>
+                        <td>@vm.DisplayName</td>
+                        @if (vm.SecurityInfo.IsReadAllowed(User))
+                        {
+                            <td>
+                                <a asp-action="Table" asp-controller="@vm.Name" style="padding-right: 15px">Table</a>
+                            </td>
+                            <td>
+                                <a asp-action="Cards" asp-controller="@vm.Name" style="padding-right: 15px">Cards</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td colspan="2" class="thin">unauthorized</td>
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
